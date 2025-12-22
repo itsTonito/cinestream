@@ -1,3 +1,5 @@
+import { AuthLayout } from "../components/layout/AuthLayout"
+
 export const LoginPage = () => {
-	return <div>LoginPage</div>
+	return <AuthLayout />
 }

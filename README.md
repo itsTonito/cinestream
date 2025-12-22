@@ -99,5 +99,3 @@ Usamos Tailwind CSS.
 El modo oscuro está activado por defecto.
 
 Colores principales configurados en CSS variables.
-
-¡Mucho éxito con sus componentes! 🚀
