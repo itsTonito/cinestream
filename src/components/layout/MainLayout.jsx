@@ -7,8 +7,8 @@ export const MainLayout = () => {
 			<div className="flex flex-col md:flex-row min-h-screen">
 				<Sidebar />
 
-				<main className="flex-1 w-full md:pl-24 pb-24 md:pb-0 relative overflow-x-hidden">
-					<div className="container mx-auto  animate-fade-in">
+				<main className="flex-1 w-full md:pl-[78px] pb-24 md:pb-0 relative overflow-x-hidden">
+					<div className="container min-w-full animate-fade-in">
 						<Outlet />
 					</div>
 				</main>
