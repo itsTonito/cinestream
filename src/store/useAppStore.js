@@ -1,33 +1,24 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
-
-/*
-  STORE GLOBAL (useAppStore)
-  --------------------------
-  Aquí guardamos los datos que toda la aplicación necesita compartir
-  Usamos 'zustand' porque es muy fácil de usar
-  Usamos 'persist' para que los datos no se borren al recargar la página (se guardan en localStorage)
-*/
+import { tmdbService } from "../services/tmdb"
 
 export const useAppStore = create(
 	persist(
 		(set, get) => ({
-			// --- ESTADO INICIAL ---
-			user: null, // Objeto con datos del usuario o null si no está logueado
-			isAuthenticated: false,
-			isPremium: false, // Si el usuario pagó la suscripción
-			favorites: [], // Lista de IDs de películas favoritas
+			user: null,
+			isAuthenticated: true,
+			isPremium: false,
+			favorites: [],
 
-			// --- ACCIONES (Funciones para modificar el estado) ---
+			movies: {
+				trending: [],
+				popular: [],
+				topRated: [],
+				loading: false,
+				error: null,
+			},
 
-			// Iniciar sesión (simulado)
-			login: (userData) =>
-				set({
-					user: userData,
-					isAuthenticated: true,
-				}),
-
-			// Cerrar sesión
+			login: (userData) => set({ user: userData, isAuthenticated: true }),
 			logout: () =>
 				set({
 					user: null,
@@ -35,32 +26,71 @@ export const useAppStore = create(
 					isPremium: false,
 					favorites: [],
 				}),
-
-			// Activar modo Premium
 			setPremium: (status) => set({ isPremium: status }),
 
-			// Agregar a favoritos
+			fetchAllMovies: async () => {
+				set((state) => ({ movies: { ...state.movies, loading: true, error: null } }))
+				try {
+					const [trending, popular, topRated] = await Promise.all([
+						tmdbService.getTrending(),
+						tmdbService.getPopular(),
+						tmdbService.getTopRated(),
+					])
+
+					const processMovies = (movies) =>
+						movies.map((m) => ({
+							...m,
+							premium: Math.random() < 0.3,
+						}))
+
+					set((state) => ({
+						movies: {
+							...state.movies,
+							trending: processMovies(trending.results || []),
+							popular: processMovies(popular.results || []),
+							topRated: processMovies(topRated.results || []),
+							loading: false,
+						},
+					}))
+				} catch (error) {
+					console.error("Error fetching movies:", error)
+					set((state) => ({
+						movies: { ...state.movies, loading: false, error: "Error al cargar películas" },
+					}))
+				}
+			},
+
 			addFavorite: (movie) => {
 				const { favorites } = get()
-				// Evitar duplicados
 				if (!favorites.some((fav) => fav.id === movie.id)) {
 					set({ favorites: [...favorites, movie] })
 				}
 			},
-
-			// Eliminar de favoritos
 			removeFavorite: (movieId) => {
 				const { favorites } = get()
 				set({ favorites: favorites.filter((fav) => fav.id !== movieId) })
 			},
-
-			// Verificar si es favorito
+			toggleFavorite: (movie) => {
+				const { favorites } = get()
+				const exists = favorites.some((f) => f.id === movie.id)
+				if (exists) {
+					set({ favorites: favorites.filter((f) => f.id !== movie.id) })
+				} else {
+					set({ favorites: [...favorites, movie] })
+				}
+			},
 			isFavorite: (movieId) => {
 				return get().favorites.some((fav) => fav.id === movieId)
 			},
 		}),
 		{
-			name: "cinestream-storage", // Nombre para el localStorage
+			name: "cinestream-storage",
+			partialize: (state) => ({
+				user: state.user,
+				isAuthenticated: state.isAuthenticated,
+				isPremium: state.isPremium,
+				favorites: state.favorites,
+			}),
 		}
 	)
 )

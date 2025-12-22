@@ -1,1 +1,32 @@
 @import "tailwindcss";
+
+@theme {
+	--color-primary: #e50914;
+	--color-primary-hover: #b20710;
+	--color-background: #141414;
+	--color-surface: #1f1f1f;
+	--color-surface-light: #2f2f2f;
+	--font-sans: "Inter", system-ui, sans-serif;
+}
+
+/* Estilos base */
+:root {
+	color-scheme: dark;
+}
+
+body {
+	background-color: var(--color-background);
+	color: white;
+	font-family: var(--font-sans);
+	margin: 0;
+	overflow-x: hidden;
+}
+
+/* Utilidades personalizadas */
+.scrollbar-hide::-webkit-scrollbar {
+	display: none;
+}
+.scrollbar-hide {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
