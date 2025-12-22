@@ -65,7 +65,7 @@ export const Sidebar = () => {
 			<div className="w-full p-4 border-t border-white/5 shrink-0">
 				<NavLink to="/perfil" className="block cursor-pointer">
 					<div
-						className={`rounded-xl p-3 bg-linear-to-br transition-all duration-300 ${
+						className={`rounded-full px-0.5 pb-1 pt-0.5 group-hover:p-3 group-hover:rounded-4xl bg-linear-to-br transition-all duration-300 ${
 							isPremium
 								? "from-amber-500/20 to-orange-600/20 border border-amber-500/30"
 								: "from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800"

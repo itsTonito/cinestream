@@ -1,4 +1,4 @@
-export const Input = ({ type = "text", placeholder, icon: Icon }) => (
+export const Input = ({ type = "text", placeholder, icon: Icon, ...props }) => (
 	<div className="relative group">
 		{Icon && (
 			<Icon
@@ -12,6 +12,7 @@ export const Input = ({ type = "text", placeholder, icon: Icon }) => (
 			className={`w-full bg-black/40 border border-white/10 rounded-xl py-3 text-white placeholder-gray-500 focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/50 transition-all ${
 				Icon ? "pl-12" : "pl-4"
 			} pr-4`}
+			{...props}
 		/>
 	</div>
 )
