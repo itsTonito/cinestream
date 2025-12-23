@@ -1,12 +1,31 @@
 import { Play } from "lucide-react"
 import { AuthForm } from "../../features/auth/AuthForm"
-import { useLocation } from "react-router"
+import { useLocation, useNavigate } from "react-router"
+import { useAppStore } from "../../store/useAppStore"
 
 export const AuthLayout = () => {
 	const location = useLocation()
+	const navigate = useNavigate()
+	const { login } = useAppStore()
+
 	const type = location.pathname === "/iniciar-sesion" ? "login" : "register"
 
-	const handleLogin = () => true
+	const handleLogin = (userData) => {
+		const cleanUserData = {
+			name: userData?.name || "",
+			email: userData?.email || "",
+		}
+
+		const user = {
+			id: "1",
+			name: cleanUserData.name || "Usuario Demo",
+			email: cleanUserData.email,
+			image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
+		}
+
+		login(user)
+		navigate("/")
+	}
 
 	return (
 		<div className="fixed inset-0 z-100 flex items-center justify-center bg-[#050505]">

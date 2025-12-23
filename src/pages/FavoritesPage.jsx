@@ -8,18 +8,16 @@ import { MovieDetailModal } from "../features/movies/MovieDetailModal"
 
 export const FavoritesPage = () => {
 	const navigate = useNavigate()
-	// Obtenemos los datos directamente del store
 	const { favorites, toggleFavorite, isPremium, isFavorite } = useAppStore()
 	const [selectedMovie, setSelectedMovie] = useState(null)
 
-	// --- Lógica de Navegación/Reproducción (Igual que en Home) ---
 	const handlePlayMovie = (movie) => {
 		if (selectedMovie) setSelectedMovie(null)
 
 		if (movie.premium && !isPremium) {
-			setSelectedMovie(movie) // Si es premium y no pagó, abre modal (bloqueado)
+			setSelectedMovie(movie)
 		} else {
-			navigate(`/watch/${movie.id}`) // Si tiene acceso, va al player
+			navigate(`/watch/${movie.id}`)
 		}
 	}
 
@@ -39,14 +37,12 @@ export const FavoritesPage = () => {
 			</h1>
 
 			{favorites.length === 0 ? (
-				// --- Empty State ---
 				<div className="flex flex-col items-center justify-center h-64 text-center border border-dashed border-white/10 rounded-2xl bg-white/5">
 					<Heart size={48} className="text-gray-600 mb-4" />
 					<p className="text-gray-400 text-lg">Aún no tienes favoritos.</p>
 					<p className="text-gray-500 text-sm">Agrega películas para verlas aquí.</p>
 				</div>
 			) : (
-				// --- Grid de Favoritos ---
 				<motion.div layout className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
 					<AnimatePresence mode="popLayout">
 						{favorites.map((movie) => (
@@ -61,7 +57,6 @@ export const FavoritesPage = () => {
 							>
 								<MovieCard movie={movie} onClick={handleSelectMovie} />
 
-								{/* Botón de Eliminar (Aparece en Hover) */}
 								<button
 									onClick={(e) => {
 										e.stopPropagation()
@@ -78,7 +73,6 @@ export const FavoritesPage = () => {
 				</motion.div>
 			)}
 
-			{/* --- Modal de Detalles --- */}
 			{selectedMovie && (
 				<MovieDetailModal
 					movie={selectedMovie}

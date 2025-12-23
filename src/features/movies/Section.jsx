@@ -1,8 +1,27 @@
 import { ChevronRight } from "lucide-react"
 import { MovieCard } from "./MovieCard"
+import { useEffect, useRef, useState } from "react"
+import { motion } from "framer-motion"
 
 export const Section = ({ title, movies, color = "bg-white", shadow = "", onMovieClick }) => {
+	const carouselRef = useRef(null)
+	const [width, setWidth] = useState(0)
+	const isDragging = useRef(false)
+
+	useEffect(() => {
+		if (carouselRef.current) {
+			setWidth(carouselRef.current.scrollWidth - carouselRef.current.offsetWidth)
+		}
+	}, [movies])
+
 	if (!movies || movies.length === 0) return null
+
+	const handleCardClick = (movie) => {
+		if (isDragging.current) {
+			return
+		}
+		if (onMovieClick) onMovieClick(movie)
+	}
 
 	return (
 		<section>
@@ -15,13 +34,33 @@ export const Section = ({ title, movies, color = "bg-white", shadow = "", onMovi
 				/>
 			</h2>
 
-			<div className="flex gap-6 overflow-x-auto pb-8 pt-2 scrollbar-hide px-2">
-				{movies.map((movie, idx) => (
-					// Usamos un wrapper para el click handler si MovieCard no lo propaga
-					<div key={movie.id} onClick={() => onMovieClick && onMovieClick(movie)}>
-						<MovieCard movie={movie} index={idx} />
-					</div>
-				))}
+			<div ref={carouselRef} className="cursor-grab active:cursor-grabbing overflow-hidden pb-8 pt-2 px-2">
+				<motion.div
+					drag="x"
+					dragConstraints={{ right: 0, left: -width }}
+					className="flex gap-6 w-fit"
+					whileTap={{ cursor: "grabbing" }}
+					onDragStart={() => {
+						isDragging.current = true
+					}}
+					onDragEnd={() => {
+						setTimeout(() => {
+							isDragging.current = false
+						}, 150)
+					}}
+				>
+					{movies.map((movie, idx) => (
+						<div
+							key={movie.id}
+							onClickCapture={() => {
+								if (isDragging.current) return
+							}}
+							onClick={() => handleCardClick(movie)}
+						>
+							<MovieCard movie={movie} index={idx} />
+						</div>
+					))}
+				</motion.div>
 			</div>
 		</section>
 	)

@@ -10,6 +10,7 @@ export const Sidebar = () => {
 		{ path: "/favoritos", icon: Heart, label: "Favoritos" },
 		{ path: "/suscribirse", icon: CreditCard, label: "Planes" },
 		{ path: "/perfil", icon: Settings, label: "Ajustes" },
+		{ path: "/buscar", icon: Search, label: "Buscar" },
 	]
 
 	const userImage =
@@ -52,14 +53,14 @@ export const Sidebar = () => {
 					</NavLink>
 				))}
 
-				<button className="flex items-center h-12 w-full rounded-xl transition-all duration-300 group/btn text-gray-400 hover:bg-white/5 hover:text-white">
+				{/* <button className="flex items-center h-12 w-full rounded-xl transition-all duration-300 group/btn text-gray-400 hover:bg-white/5 hover:text-white">
 					<div className="w-14 flex items-center justify-center shrink-0">
 						<Search size={22} />
 					</div>
 					<span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-medium whitespace-nowrap delay-75">
 						Buscar
 					</span>
-				</button>
+				</button> */}
 			</div>
 
 			<div className="w-full p-4 border-t border-white/5 shrink-0">

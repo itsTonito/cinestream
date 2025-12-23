@@ -1,7 +1,9 @@
 import { Star } from "lucide-react"
 import { tmdbService } from "../../services/tmdb"
+import { useAppStore } from "../../store/useAppStore"
 
 export const MovieCard = ({ movie, onClick }) => {
+	const { isPremium } = useAppStore()
 	const imageUrl = movie.poster_path
 		? tmdbService.getImageW500(movie.poster_path)
 		: "https://via.placeholder.com/200x300?text=No+Image"
@@ -25,7 +27,7 @@ export const MovieCard = ({ movie, onClick }) => {
 
 				<div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-				{movie.premium && (
+				{movie.premium && !isPremium && (
 					<div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded-lg border border-amber-500/50 flex items-center gap-1 z-20">
 						<Star size={12} className="text-amber-400 fill-amber-400" />
 						<span className="text-[10px] font-bold text-amber-100 uppercase tracking-wider">Premium</span>

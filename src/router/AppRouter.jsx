@@ -10,6 +10,7 @@ import { ProtectedRoute } from "./ProtectedRoute"
 import { VideoPlayer } from "../features/player/VideoPlayer"
 import { PublicRoute } from "./PublicRoute"
 import { AuthLayout } from "../components/layout/AuthLayout"
+import { SearchPage } from "../pages/SearchPage"
 
 const router = createBrowserRouter([
 	{
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
 			{
 				path: "/favoritos",
 				element: <FavoritesPage />,
+			},
+			{
+				path: "/buscar",
+				element: <SearchPage />,
 			},
 		],
 	},
